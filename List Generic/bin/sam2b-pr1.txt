@@ -1,0 +1,27 @@
+Assignment name: pr1 
+TCSS 342: Data Structures, Spring 2017, Monika Sobolewska
+
+Name: Sam Brendel
+UWNetID: sam2b
+Subversion Revision Number: 12
+
+
+Assignment Overview:
+This assignment is practice creating my own generic list structure(s).  A data structure that is generic is parameterized as some unknown type, which enables the list to contain any data type.  The two sub-structures are unsorted and sorted.  The sorted structure is the only data structure that requires to hold a Comparable data type for the reason of keeping the elements in ascending order.  The three parent structures are LinkedList, ArrayList, and LinkedArrayList.  The ArrayList and LinkedArrayList's underlying structure is a growable array of contiguous elements, and has the advantages such as fast searching and writing due to the nature of arrays.  The sorted ArrayList and LinkedArrayList use a binary search which is O(log n) which is very apparent on large sorted arrays.  The LinkedList's underlying structure is several linked nodes individually randomly allocated in memory, and has the advantages of not needing contiguous portion of memory which might pose a problem with very large lists and/or not enough memory on the system.  A sorted LinkedList does not search via binary search because the linked nodes are not in a contiguous memory allocation, implying to do so would actually slow down the algorithm. 
+This assignment utilizes a parent interface that defines the contract for how all lists are to operate and how/what it is to be exposed to the client.  Then, the ArrayList and LinkedList sub-parent structures have an abstract class which contains the code common respective to its sub structures sorted and unsorted.  This hierarchy logically makes sense, and lends itself to organization of code and a safer way to maintain the code.
+
+
+Technical Impression:
+Notes: I've added additional test cases that [I feel] are rigorous and account for various relevant combinations.  Additionally, all classes have 100% code coverage according to the Eclemma tool for the Eclipse IDE.  While 100% code coverage does not mean the code is 100% free of bugs, it certainly has revealed areas that could stand fixing or removal.
+
+This is an awesome assignment, and very relevant to learning and understanding data structures and their internal workings, which further helps us determine Big-O estimation.  In this assignment, I chose to optimize some existing API and test code where it made sense, but the test cases' intention was not altered.  One augmentation was a private method that calculates the appropriate leading zeros to use for any number starting from zero up to some maximum number.  For example, for a range of 0-385, all single digit numbers will have two leading zeros, all double digit numbers will have one leading zero.  The algorithm accounts for any number such as millions, billions, trillions, etc.  I could have chosen to be lazy and only dealt with the provided test case's maximum test value of 205, but I learned to always write algorithms and programs with scalability in mind, otherwise it is accepting potentially buggy program.
+For some reason, this assignment took meet a full week to complete; I thought I could finish over a single weekend.  Through it all, it was an excellent refresher to list data structures, including my beloved linked list.  I originally taught myself linked lists circa 2012, and was the apex of my OOP learning experience thus far.
+In this assignment, I originally used Java's Arrays.binarySearch() API, but then I discovered I was required to write my own binary search algorithm that behaves the same way.  I wrote it correctly except for some reason I had it in my brain to /subtract/ low from high instead of adding low and high together.  I debugged by using paper and pencil to draw out scenarios and visually see what was happening.  While this problem taxed me several hours, I was reminded the usefulness (or necessity) of drawing a (my) data structure on paper to test and debug. 
+
+
+Unresolved problems in my submission:
+None.
+
+
+Questions:
+None.

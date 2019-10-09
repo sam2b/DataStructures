@@ -1,0 +1,22 @@
+Assignment name: pr4
+TCSS 342: Data Structures, Spring 2017, Monika Sobolewska
+
+Name: Sam Brendel
+UWNetID: sam2b
+Subversion Revision Number: 54
+
+Assignment Overview:
+Here, I am processing text files (two e-books) and processing data such as word frequency having at least 3 letters, and evaluating the Jaccard Index to reveal the correlation and overlap between the two text files.  This is done with a Hash Map data structure, but also using a Priority Queue (aka: Max Heap) to display the top 10 words that occur most frequently.  The union and intersection is also calculated.  Finally, a CSV file (comma separated value) is generated showing such data.
+
+Technical Impression:
+I found this assignment #4 much more intuitive than assignment #3, and very much enjoyed the concept of a Hash Table (or Hash Map).  I appreciated traversing this data structure with an iterator (a next method and hasNext method).  I as able to think through this project without drawing things out on paper; it just all seemed very straight forward.  However, the only thing that was a total road block was handling a generic array and how to instantiate it.  Thankfully, a kind class mate guided me to use the Array.newInstance() method.  I was surprised to use a bit of reflection on this assignment, but it led me do more reading on Java's reflection and the Class class, and how the Java VM is actually handling arrays in the background.  This all seems to be unique to arrays.  I plan to delve deep into reflection later on for my own research and education since it has its place for usage, but Oracle advises sparing use of it and its security and portability issues.
+I chose to make a handy toString() method for the HashEntry inner class that allowed me to see the current node and its reference to the next node.  This actually results in printing the entire linked list for the given bucket in the array, and was useful for debugging.
+I liked the use of the Comparator interface since it allows me to specify how I want the data sorted or evaluated.  This was good practice.  It seems to me implementing a comparator is only useful for generics since the client actually knows the data types.
+
+
+Unresolved problems in my submission:
+None.
+
+
+Questions:
+None.
