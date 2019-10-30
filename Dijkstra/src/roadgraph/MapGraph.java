@@ -106,7 +106,7 @@ public class MapGraph {
 	/**
 	 * Adds a directed edge to the graph from pt1 to pt2.  
 	 * Precondition: Both GeographicPoints have already been added to the graph
-	 * @param from The starting point of the edge
+	 * @param from The origining point of the edge
 	 * @param to The ending point of the edge
 	 * @param roadName The name of the road
 	 * @param roadType The type of the road
@@ -144,7 +144,7 @@ public class MapGraph {
 		HashSet<GeographicPoint> neighborSet = new HashSet<>();
 		for(final MapEdge edge : edges) {
 			
-			// If the edge has the same start point as me, the it means this edge's end point has my neighbor.
+			// If the edge has the same origin point as me, the it means this edge's end point has my neighbor.
 			/*if (edge.getStartPoint().equals(new GeographicPoint(node.getX(), node.getY()))) {
 				neighborSet.add(edge.getEndPoint());
 			}*/
@@ -156,44 +156,44 @@ public class MapGraph {
 		return neighborSet;
 	}
 	
-	/** Find the path from start to goal using breadth first search
+	/** Find the path from origin to destination using breadth first search
 	 * 
-	 * @param start The starting location
-	 * @param goal The goal location
+	 * @param origin The origining location
+	 * @param destination The destination location
 	 * @return The list of intersections that form the shortest (unweighted)
-	 *   path from start to goal (including both start and goal).
+	 *   path from origin to destination (including both origin and destination).
 	 */
-	public List<GeographicPoint> bfs(GeographicPoint start, GeographicPoint goal) {
+	public List<GeographicPoint> bfs(GeographicPoint origin, GeographicPoint destination) {
 		// Dummy variable for calling the search algorithms
         Consumer<GeographicPoint> temp = (x) -> {};
-        return bfs(start, goal, temp);
+        return bfs(origin, destination, temp);
 	}
 	
-	/** Find the path from start to goal using breadth first search
+	/** Find the path from origin to destination using breadth first search
 	 * 
-	 * @param start The starting location
-	 * @param goal The goal location
+	 * @param origin The origining location
+	 * @param destination The destination location
 	 * @param nodeSearched A hook for visualization.  
 	 * @return The list of intersections that form the shortest (unweighted)
-	 *   path from start to goal (including both start and goal).
+	 *   path from origin to destination (including both origin and destination).
 	 */
-	public List<GeographicPoint> bfs(GeographicPoint start, 
-			 					     GeographicPoint goal, 
+	public List<GeographicPoint> bfs(GeographicPoint origin, 
+			 					     GeographicPoint destination, 
 			 					     Consumer<GeographicPoint> nodeSearched)
 	{
 				
 		// Setup - check validity of inputs
-		if (start == null || goal == null)
+		if (origin == null || destination == null)
 			throw new NullPointerException("Cannot find route from or to null node");
 		
 		// setup to begin BFS
 		HashMap<GeographicPoint, GeographicPoint> parentMap = new HashMap<GeographicPoint, GeographicPoint>();
 		Queue<GeographicPoint> toExplore = new LinkedList<GeographicPoint>();
 		HashSet<GeographicPoint> visited = new HashSet<GeographicPoint>();
-		toExplore.add(start);
+		toExplore.add(origin);
 		GeographicPoint next = null;
 
-		visited.add(start);
+		visited.add(origin);
 		
 		while (!toExplore.isEmpty()) {
 			next = toExplore.remove();
@@ -201,7 +201,7 @@ public class MapGraph {
 			 // hook for visualization
 			nodeSearched.accept(next);
 			
-			if (next.equals(goal)) {
+			if (next.equals(destination)) {
 				break;
 			}
 			
@@ -217,13 +217,13 @@ public class MapGraph {
 			}
 		}
 			
-		if (!next.equals(goal)) {
-			System.out.println("No path found from " +start+ " to " + goal);
+		if (!next.equals(destination)) {
+			System.out.println("No path found from " +origin+ " to " + destination);
 			return null;
 		}
 		
 		// Reconstruct the parent path
-		List<GeographicPoint> path = reconstructPath(parentMap, start, goal);
+		List<GeographicPoint> path = reconstructPath(parentMap, origin, destination);
 
 		return path;
 	
@@ -231,73 +231,73 @@ public class MapGraph {
 	
 
 
-	/** Reconstruct a path from start to goal using the parentMap
+	/** Reconstruct a path from origin to destination using the parentMap
 	 *
 	 * @param parentMap the HashNode map of children and their parents
-	 * @param start The starting location
-	 * @param goal The goal location
+	 * @param origin The origining location
+	 * @param destination The destination location
 	 * @return The list of intersections that form the shortest path from
-	 *   start to goal (including both start and goal).
+	 *   origin to destination (including both origin and destination).
 	 */
 	private List<GeographicPoint>
 	reconstructPath(HashMap<GeographicPoint, GeographicPoint> parentMap,
-					GeographicPoint start, GeographicPoint goal)
+					GeographicPoint origin, GeographicPoint destination)
 	{
 		LinkedList<GeographicPoint> path = new LinkedList<GeographicPoint>();
-		GeographicPoint current = goal;
+		GeographicPoint current = destination;
 
-		while (!current.equals(start)) {
+		while (!current.equals(origin)) {
 			path.addFirst(current);
 			current = parentMap.get(current);
 		}
 
-		path.addFirst(start);
+		path.addFirst(origin);
 		return path;
 	}
 
 
-	/** Find the path from start to goal using Dijkstra's algorithm
+	/** Find the path from origin to destination using Dijkstra's algorithm
 	 * 
-	 * @param start The starting location
-	 * @param goal The goal location
+	 * @param origin The origining location
+	 * @param destination The destination location
 	 * @return The list of intersections that form the shortest path from 
-	 *   start to goal (including both start and goal).
+	 *   origin to destination (including both origin and destination).
 	 */
-	public List<GeographicPoint> dijkstra(GeographicPoint start, GeographicPoint goal) {
+	public List<GeographicPoint> dijkstra(GeographicPoint origin, GeographicPoint destination) {
 		// Dummy variable for calling the search algorithms
 		// You do not need to change this method.
         Consumer<GeographicPoint> temp = (x) -> {};
-        return dijkstra(start, goal, temp);
+        return dijkstra(origin, destination, temp);
 	}
 	
-	/** Find the path from start to goal using Dijkstra's algorithm
+	/** Find the path from origin to destination using Dijkstra's algorithm
 	 * 
-	 * @param start The starting location
-	 * @param goal The goal location
+	 * @param origin The origining location
+	 * @param destination The destination location
 	 * @param nodeSearched A hook for visualization.  
 	 * @return The list of intersections that form the shortest path from 
-	 *   start to goal (including both start and goal).
+	 *   origin to destination (including both origin and destination).
 	 */
-	public List<GeographicPoint> dijkstra(GeographicPoint start, 
-										  GeographicPoint goal, Consumer<GeographicPoint> nodeSearched)
+	public List<GeographicPoint> dijkstra(GeographicPoint origin, 
+										  GeographicPoint destination, Consumer<GeographicPoint> nodeSearched)
 	{
 		// Setup - check validity of inputs
-		if (start == null || goal == null)
+		if (origin == null || destination == null)
 			throw new NullPointerException("Cannot find route from or to null node");
 		
 		// setup to begin Dijkstra
 		/** Nodes that still need to be explored.  All neighbors of a given node are added to this list. */
-		PriorityQueue<PointCounter> toExplore = new PriorityQueue<>(new PointCounter(null)); // using a comparator.
+		PriorityQueue<NodeData> toExplore = new PriorityQueue<>(new NodeData(null)); // using a comparator.
 		/** A set of nodes that have been visited. */
 		HashSet<GeographicPoint> visited = new HashSet<>();
 		/** Keeps track of a node and its parent in the shortest path. */
 		HashMap<GeographicPoint, GeographicPoint> parentMap = new HashMap<>();
 		/** Keeps track of all nodes' lengths, and is updated with new lengths if there is a shorter path. */
-		List<PointCounter> table = new ArrayList<>(); 
+		List<NodeData> table = new ArrayList<>(); 
 		
-		PointCounter current = new PointCounter(start, 0.0);
+		NodeData current = new NodeData(origin, 0.0);
 		//PointCounter lastKnown = null;
-		parentMap.put(current.point, null);
+		parentMap.put(current.node, null);
 		toExplore.add(current);
 		table.add(current);
 		
@@ -305,12 +305,12 @@ public class MapGraph {
 			current = toExplore.remove();
 
 			// hook for visualization
-			nodeSearched.accept(current.point);
+			nodeSearched.accept(current.node);
 
-			if(!visited.contains(current.point)) {
-				visited.add(current.point);
+			if(!visited.contains(current.node)) {
+				visited.add(current.node);
 			
-				if (current.point.equals(goal)) {
+				if (current.node.equals(destination)) {
 					break;
 					// Stop the loop and then reconstructs the path to return by this method.
 				}
@@ -322,22 +322,22 @@ public class MapGraph {
 //				} /////////////////////////////////////////////////////////////////////////////
 				
 				// For each of current's neighbors, which is really each of current's edges' end point.
-				for(final int index : pointNodeMap.get(current.point)) {
+				for(final int index : pointNodeMap.get(current.node)) {
 					MapEdge edge = edges.get(index);
 
 					if(!visited.contains(edge.getEndPoint())) {
 
-						PointCounter neighbor = null;
+						NodeData neighbor = null;
 							
 						// If the table already has an entry for this node, then use it.  I want its existing length, not infinity.
-						for(final PointCounter pc : table) {
-							if(pc.point.equals(edge.getEndPoint())) {
+						for(final NodeData pc : table) {
+							if(pc.node.equals(edge.getEndPoint())) {
 								neighbor = pc;
 							}
 						}
 						
 						if (neighbor == null) {
-							neighbor = new PointCounter(edge.getEndPoint()); // length defaults to infinity.
+							neighbor = new NodeData(edge.getEndPoint()); // length defaults to infinity.
 							table.add(neighbor);
 						}
 						
@@ -347,7 +347,7 @@ public class MapGraph {
 						 * and enqueue this neighbor. */
 						if (current.length + edge.getLength() < neighbor.length) {
 							neighbor.length = current.length + edge.getLength();
-							parentMap.put(neighbor.point, current.point); // This is the new parent since the path is shorter.
+							parentMap.put(neighbor.node, current.node); // This is the new parent since the path is shorter.
 
 							table.remove(neighbor); // rip
 							table.add(neighbor);    // and replace.
@@ -358,84 +358,85 @@ public class MapGraph {
 			}
 		}
 			
-		if (!current.point.equals(goal)) {
-			System.out.println("No path found from " + start + " to " + goal);
+		if (!current.node.equals(destination)) {
+			System.out.println("No path found from " + origin + " to " + destination);
 			return null;
 		}
 		
 		// Reconstruct the parent path
-		List<GeographicPoint> path = reconstructPath(parentMap, start, goal);
+		List<GeographicPoint> path = reconstructPath(parentMap, origin, destination);
 		return path;
 	}
 		
-	private class PointCounter implements Comparator<PointCounter> {
+	private class NodeData implements Comparator<NodeData> {
 		public double length;
-		public GeographicPoint point;
+		public GeographicPoint node;
+		public double straightLength;
 
-		public PointCounter(final GeographicPoint thePoint, final double theLength) {
+		public NodeData(final GeographicPoint theNode, final double theLength) {
 			this.length = theLength;
-			this.point = thePoint;
+			this.node = theNode;
+			this.straightLength = Double.POSITIVE_INFINITY;
 		}
 
-		public PointCounter(final GeographicPoint thePoint) {
-			//this(thePoint, null); // represents infinity.
-			this(thePoint, Double.POSITIVE_INFINITY); // represents infinity.
+		public NodeData(final GeographicPoint thePoint) {
+			this(thePoint, Double.POSITIVE_INFINITY);
 		}
 
 		@Override
-		public int compare(final PointCounter objectA, PointCounter objectB) {
+		public int compare(final NodeData objectA, NodeData objectB) {
 			return (int)(objectA.length - objectB.length);
 		}
 		
 		@Override
 		public String toString() {
 			String len = (length == Double.POSITIVE_INFINITY) ? "infinity" : String.valueOf(Math.round(length));
-			return "[" + (int)point.x + "," + (int)point.y + " length " + len + "]";
+			return "[" + (int)node.x + "," + (int)node.y + " length " + len + "]";
 		}
 	}
 
-	/** Find the path from start to goal using A-Star search
+	/** Find the path from origin to destination using A-Star search
 	 * 
-	 * @param start The starting location
-	 * @param goal The goal location
+	 * @param origin The origining location
+	 * @param destination The destination location
 	 * @return The list of intersections that form the shortest path from 
-	 *   start to goal (including both start and goal).
+	 *   origin to destination (including both origin and destination).
 	 */
-	public List<GeographicPoint> aStarSearch(GeographicPoint start, GeographicPoint goal) {
+	public List<GeographicPoint> aStarSearch(GeographicPoint origin, GeographicPoint destination) {
 		// Dummy variable for calling the search algorithms
         Consumer<GeographicPoint> temp = (x) -> {};
-        return aStarSearch(start, goal, temp);
+        return aStarSearch(origin, destination, temp);
 	}
 	
-	/** Find the path from start to goal using A-Star search
+	/** Find the path from origin to destination using A-Star search
 	 * 
-	 * @param start The starting location
-	 * @param goal The goal location
+	 * @param origin The origining location
+	 * @param destination The destination location
 	 * @param nodeSearched A hook for visualization.  See assignment instructions for how to use it.
 	 * @return The list of intersections that form the shortest path from 
-	 *   start to goal (including both start and goal).
+	 *   origin to destination (including both origin and destination).
 	 */
-	public List<GeographicPoint> aStarSearch(GeographicPoint start, 
-											 GeographicPoint goal, Consumer<GeographicPoint> nodeSearched)
+	public List<GeographicPoint> aStarSearch(GeographicPoint origin, 
+											 GeographicPoint destination, Consumer<GeographicPoint> nodeSearched)
 	{
 		// Setup - check validity of inputs
-		if (start == null || goal == null)
+		if (origin == null || destination == null)
 			throw new NullPointerException("Cannot find route from or to null node");
 		
 		// setup to begin Dijkstra
 		/** Nodes that still need to be explored.  All neighbors of a given node are added to this list. */
-		PriorityQueue<PointCounter> toExplore = new PriorityQueue<>(new PointCounter(null)); // using a comparator.
+		PriorityQueue<NodeData> toExplore = new PriorityQueue<>(new NodeData(null)); // using a comparator.
 		/** A set of nodes that have been visited. */
 		HashSet<GeographicPoint> visited = new HashSet<>();
 		/** Keeps track of a node and its parent in the shortest path. */
 		HashMap<GeographicPoint, GeographicPoint> parentMap = new HashMap<>();
 		/** Keeps track of all nodes' lengths, and is updated with new lengths if there is a shorter path. */
-		List<PointCounter> table = new ArrayList<>();
+		List<NodeData> table = new ArrayList<>();
 		
-		PointCounter current = new PointCounter(start, 0.0);
+		NodeData current = new NodeData(origin, 0.0);
 		//PointCounter lastKnown = null;
 
-		parentMap.put(current.point, null);
+		parentMap.put(current.node, null);
 		toExplore.add(current);
 		table.add(current);
 		
@@ -443,12 +444,12 @@ public class MapGraph {
 			current = toExplore.remove();
 
 			// hook for visualization
-			nodeSearched.accept(current.point);
+			nodeSearched.accept(current.node);
 
-			if(!visited.contains(current.point)) {
-				visited.add(current.point);
+			if(!visited.contains(current.node)) {
+				visited.add(current.node);
 			
-				if (current.point.equals(goal)) {
+				if (current.node.equals(destination)) {
 					break;
 					// Stop the loop and then reconstructs the path to return by this method.
 				}
@@ -460,59 +461,53 @@ public class MapGraph {
 //				} /////////////////////////////////////////////////////////////////////////////
 				
 				double shortest = Double.POSITIVE_INFINITY;
-				PointCounter temp = null;
 				// For each of current's neighbors, which is really each of current's edges' end point.
-				for(final int index : pointNodeMap.get(current.point)) {
+				for(final int index : pointNodeMap.get(current.node)) {
 					MapEdge edge = edges.get(index);
-					PointCounter neighbor = null;
+					NodeData neighbor = null;
 					
 					if(!visited.contains(edge.getEndPoint())) {
 
 						// If the table already has an entry for this node, then use it.  I want its existing length, not infinity.
-						for(final PointCounter pc : table) {
-							if(pc.point.equals(edge.getEndPoint())) {
+						for(final NodeData pc : table) {
+							if(pc.node.equals(edge.getEndPoint())) {
 								neighbor = pc;
 							}
 						}
 						
 						if (neighbor == null) {
-							neighbor = new PointCounter(edge.getEndPoint()); // length defaults to infinity.
+							neighbor = new NodeData(edge.getEndPoint()); // length defaults to infinity.
 							table.add(neighbor);
 						}
 						
 						
-						double straightLine = neighbor.point.distance(goal);
+						neighbor.straightLength = neighbor.node.distance(destination);
 						
-						//double lengthToNeighbor = current.length + edge.getLength();
-						
-						neighbor.length = straightLine + current.length + edge.getLength();
+						double s = neighbor.straightLength + current.length + edge.getLength();
 						
 						/* If the path through current to neighbor is shorter, 
 						 * then update the neighbor's length,
 						 * and update current as neighbor's parent in parent map,
 						 * and enqueue this neighbor. */ 
-						if (neighbor.length < shortest) {
-							temp = neighbor;
-							temp.length = neighbor.length;
-							shortest = neighbor.length;
-
-							parentMap.put(temp.point, current.point); // This is the new parent since the path is shorter.
-							table.remove(temp); // rip
-							table.add(temp);    // and replace.
+						if (s < shortest) {
+							shortest = neighbor.length = s;
+							parentMap.put(neighbor.node, current.node); // This is the new parent since the path is shorter.
+							table.remove(neighbor); // rip
+							table.add(neighbor);    // and replace.
 						}
-						toExplore.add(temp);
+						toExplore.add(neighbor);
 					}
 				} // Now we have the shortest neighbor.
 			}
 		}
 			
-		if (!current.point.equals(goal)) {
-			System.out.println("No path found from " + start + " to " + goal);
+		if (!current.node.equals(destination)) {
+			System.out.println("No path found from " + origin + " to " + destination);
 			return null;
 		}
 		
 		// Reconstruct the parent path
-		List<GeographicPoint> path = reconstructPath(parentMap, start, goal);
+		List<GeographicPoint> path = reconstructPath(parentMap, origin, destination);
 		return path;
 	}
 	

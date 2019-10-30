@@ -3,9 +3,6 @@
  */
 package roadgraph;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import geography.GeographicPoint;
 
 /**

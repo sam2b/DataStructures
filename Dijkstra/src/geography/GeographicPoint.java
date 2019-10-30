@@ -1,9 +1,9 @@
 package geography;
 
-import java.awt.geom.Point2D.Double;
+import java.awt.geom.Point2D;
 
 @SuppressWarnings("serial")
-public class GeographicPoint extends Double {
+public class GeographicPoint extends Point2D.Double {
 	
 	public GeographicPoint(double latitude, double longitude)
 	{
