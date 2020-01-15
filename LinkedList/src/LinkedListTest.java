@@ -1,6 +1,7 @@
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.awt.Point;
+import java.util.Iterator;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -116,4 +117,56 @@ class LinkedListTest {
 		assertFalse(point0 == point1, "Should not be the same memory address.");
 		
 	}
+	
+	@Test
+	void testIteratorEmptyListHasNext() {
+		LinkedList<Point> list = new LinkedList<Point>();
+		Iterator<Point> it = list.iterator();
+		assertFalse(it.hasNext());
+	}
+	
+	@Test
+	void testIteratorSingleElementHasNext() {
+		LinkedList<Point> list = new LinkedList<Point>();
+		list.add(new Point());
+		Iterator<Point> it = list.iterator();
+		assertFalse(it.hasNext());
+	}
+	
+	
+	@Test
+	void testIteratorMultiElementHasNext() {
+		Iterator<Point> it = linkedListB.iterator();
+		assertTrue(it.hasNext());
+	}
+	
+	@Test
+	void testIteratorNext() {
+		Point p = linkedListB.get(1);
+		Iterator<Point> it = linkedListB.iterator();
+		assertFalse(p.getX() == it.next().getX());
+	}
+	
+	
+	@Test
+	void testIteratorSameMemoryAddress() {
+		Point p = linkedListB.get(2); // index 2.
+		Iterator<Point> it = linkedListB.iterator();
+		it.next(); // index 0.
+		it.next(); // index 1.
+		assertTrue(p == it.next()); // index 2.
+	}
+	
+	@Test
+	void testIteratorReset() {
+		Iterator<Point> it = linkedListB.iterator();
+		it.next(); // index 0.
+		it.next(); // index 1.
+		it.next(); // index 2.
+		((LinkedList<Point>.LLIterator)it).reset();
+		assertTrue(it.next() == linkedListB.get(0));
+	}
+	
+
+	
 }

@@ -1,8 +1,11 @@
+import java.awt.Point;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.ListIterator;
 
-public class LinkedList<T> {
+import com.sun.xml.internal.bind.v2.schemagen.xmlschema.List;
+
+public class LinkedList<T> implements Iterable<T>{
 	
 	private Node head, tail, current, temp;
 	private int size;
@@ -36,11 +39,6 @@ public class LinkedList<T> {
 	public boolean contains(T t) {
 		// TODO Auto-generated method stub
 		return false;
-	}
-
-	public Iterator<T> iterator() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	public T[] toArray() {
@@ -223,12 +221,12 @@ public class LinkedList<T> {
 		return index;
 	}
 
-	public ListIterator listIterator() {
+	public ListIterator<T> listIterator() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public ListIterator listIterator(int index) {
+	public ListIterator<T> listIterator(int index) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -268,13 +266,18 @@ public class LinkedList<T> {
 		return sb.toString();
 	}
 	
+
+	@Override
+	public Iterator<T> iterator() {
+		return new LLIterator();
+	}
 	
 	// Inner Class.
 	private class Node {
 		Node next;
 		T data;
 		// Constructor.
-		protected Node(T t) {
+		public Node(T t) {
 			this.data = t;
 			this.next = null;
 		}
@@ -282,6 +285,47 @@ public class LinkedList<T> {
 		@Override
 		public String toString() {
 			return this.data.toString();
+		}
+	}
+	
+	
+	// Inner Class.
+	protected class LLIterator implements Iterator<T> {
+		private Node itCurrent, itTemp;
+		
+		// Constructor.
+		public LLIterator() {
+			this.itCurrent = head;
+		}
+		
+		@Override
+		public boolean hasNext() {
+			return (this.itCurrent != null && this.itCurrent.next != null);
+		}
+
+		@Override
+		public T next() {
+			if (this.itCurrent == head) {
+				this.itCurrent = head.next;
+				return head.data; 
+			}
+			else if(this.itCurrent != null || this.itCurrent.next != null) {
+				itTemp = itCurrent;
+				this.itCurrent = this.itCurrent.next;
+				return this.itTemp.data;
+			}
+			return null;
+		}
+		
+		/**
+		 * To see this method, you must cast your Iterator<T> object with LinkedList<T>.LLIterator
+		 */
+		public void reset() {
+			this.itCurrent = head;
+		}
+		
+		public void aaapoop() {
+			
 		}
 	}
 
