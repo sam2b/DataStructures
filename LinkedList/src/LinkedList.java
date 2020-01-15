@@ -22,6 +22,11 @@ public class LinkedList<T> implements Iterable<T>{
 	}
 
 	public static void main(String[] args) {
+		LinkedList<Point> linkedListC = new LinkedList<Point>();
+		linkedListC.add(new Point(1, 2));
+		linkedListC.add(new Point(3, 4));
+		linkedListC.add(new Point(5, 6));
+		System.out.println(linkedListC);
 //		LinkedList<Point> linkedListA = new LinkedList<Point>();
 //		linkedListA.add(new Point());
 //		System.out.println(linkedListA.get(0).getClass().toString());
@@ -256,7 +261,7 @@ public class LinkedList<T> implements Iterable<T>{
 		sb.append("[size=");
 		sb.append(size);
 		sb.append(", ");
-		for (int i=0; i <= size-1; i++) { // Fence post.
+		for (int i=0; i < size-1; i++) { // Fence post.
 			sb.append(current.toString());
 			sb.append(", ");
 			current = current.next;
